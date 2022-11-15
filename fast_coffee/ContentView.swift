@@ -8,14 +8,27 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject var orderApi = OrderViewModel()
+    
+    init() {
+        orderApi.getOrders()
+    }
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        NavigationView {
+            List(orderApi.orders){ order in
+                Text(order.name)     
+            }
+            .navigationTitle("Orders")
+            .listStyle(.grouped).toolbar {
+                NavigationLink {
+                    AddNewOrderView(apiOrder: orderApi)
+                } label: {
+                    Text("Add").font(.custom("", size: 18))
+                }
+            }
+            
         }
-        .padding()
+        
     }
 }
 
